@@ -10,7 +10,8 @@ using namespace std;
   
 ifstream customer_list ("customers.json"); 
 ofstream out ("answer.json"); 
-  
+
+// Function to convert degree to radian. 
 double degtorad(double deg) 
 { 
     return ( deg * pi / 180); 
@@ -37,6 +38,19 @@ double distanceEarth(double lat2d, double lon2d)
   
 struct json 
 { 
+  /* i and j are used to access various 
+    elements of the char arrays. x is used 
+    to measure the size of the element of 
+    latitude_as_string array. y is used to 
+    measure the size of the element of 
+    longitude_as_string array. m is used 
+    to measure the size of the element 
+    of id_as_string array. n is used to 
+    measure the size of the element of 
+    name array. f keeps count of " " " 
+    symbol. fi keeps count of " : " symbol. 
+    */
+
     long long int length, i, j, x, y, m, 
                   n, f, fi, id[100000]; 
       
@@ -60,6 +74,11 @@ struct json
         } 
     } 
   
+  
+    // Function to read various attributes 
+    // like latitude, longitude, name , id, 
+    // etc, from customers.json file. simplistic 
+    // approach is used to get JSON attributes. 
     void json_parser() 
     {                      
         if (customer_list.is_open()) 
@@ -79,7 +98,7 @@ struct json
   
                     else if (line[j] == ':') 
                         fi++; 
-                          
+                    // To get latitude of the location.      
                     if (f == 3) 
                     { 
                         j++; 
@@ -92,7 +111,8 @@ struct json
   
                         j--; latitude_as_string[x] = '\0'; 
                     } 
-                      
+                   // To get longitude of the location. 
+
                     else if (f == 13) 
                     { 
                         j++; 
@@ -105,7 +125,8 @@ struct json
   
                         j--; longitude_as_string[y] = '\0'; 
                     } 
-                      
+                   // To get id of the friend. 
+
                     if (fi == 2) 
                     { 
                         j += 2; 
@@ -119,7 +140,7 @@ struct json
                         j--; id_as_string[m] = '\0'; 
                         fi++; 
                     } 
-                      
+                      // To get name of the friend. 
                     else if (fi == 4) 
                     { 
                         j += 2; 
@@ -134,7 +155,8 @@ struct json
                         fi++; f += 2; 
                     } 
                 } 
-  
+                 // Converting latitude and longitude 
+                // in string to float.  
                 lat2d = atof(latitude_as_string); 
                 lon2d = atof(longitude_as_string); 
                 distance_calculator(); 
